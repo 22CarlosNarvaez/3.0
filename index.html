@@ -114,8 +114,8 @@ button {
 
 <canvas id="gameCanvas"></canvas>
 
-<!-- 🎵 AUDIO -->
-<audio id="bgMusic" loop>
+<!-- 🎵 AUDIO OPTIMIZADO -->
+<audio id="bgMusic" loop preload="auto">
   <source src="audio/Penyair - Parcera x @AlkaProduce  (video oficial).mp3" type="audio/mpeg">
 </audio>
 
@@ -138,15 +138,25 @@ const player={ x:canvas.width/2, y:canvas.height-100 };
 const faceImg=new Image();
 faceImg.src="img/ella.png";
 
-/* 🎵 MÚSICA */
+/* 🎵 MÚSICA MEJORADA */
 const music = document.getElementById("bgMusic");
+let musicStarted = false;
+
+// precargar
+music.load();
 
 function startMusic(){
-  music.play().catch(()=>{});
+  if(!musicStarted){
+    music.volume = 0.7;
+    music.play().then(()=>{
+      musicStarted = true;
+    }).catch(()=>{});
+  }
 }
 
-// se activa en el primer toque
-window.addEventListener("pointerdown", startMusic, { once:true });
+// 👇 ACTIVA EN CUALQUIER INTERACCIÓN (INSTANTÁNEO)
+document.addEventListener("touchstart", startMusic, { once:true });
+document.addEventListener("click", startMusic, { once:true });
 
 /* 💬 MENSAJES */
 const messages=[
